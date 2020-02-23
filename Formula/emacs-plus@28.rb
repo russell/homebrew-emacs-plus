@@ -19,6 +19,8 @@ class EmacsPlusAT28 < EmacsBase
   option "with-debug", "Build with debug symbols and debugger friendly optimizations"
   option "with-xwidgets", "Experimental: build with xwidgets support"
   option "with-no-frame-refocus", "Disables frame re-focus (ie. closing one frame does not refocus another one)"
+  option "with-native-comp-branch",
+    "Build from native-comp branch"
 
   #
   # Dependencies
@@ -40,6 +42,21 @@ class EmacsPlusAT28 < EmacsBase
   if build.with? "x11"
     depends_on "freetype" => :recommended
     depends_on "fontconfig" => :recommended
+  end
+
+  if build.with? "native-comp-branch"
+    depends_on "giflib" => :recommended
+    depends_on "jpeg" => :recommended
+    depends_on "libtiff" => :recommended
+    depends_on "gcc"
+  end
+
+  #
+  # URLs
+  #
+
+  if build.with? "native-comp-branch"
+    url "https://github.com/emacs-mirror/emacs.git", :branch => "feature/native-comp"
   end
 
   #
@@ -123,6 +140,10 @@ class EmacsPlusAT28 < EmacsBase
       ENV.prepend_path "PKG_CONFIG_PATH", imagemagick_lib_path
     end
 
+    if build.with? "native-comp-branch"
+      args << "--with-nativecomp"
+    end
+
     args << "--with-modules"
     args << "--with-rsvg"
     args << "--without-pop" if build.with? "mailutils"
@@ -130,6 +151,12 @@ class EmacsPlusAT28 < EmacsBase
 
     ENV.prepend_path "PATH", Formula["gnu-sed"].opt_libexec/"gnubin"
     system "./autogen.sh"
+
+    if build.with? "native-comp-branch"
+      ENV.prepend_path "LIBRARY_PATH", "#{Formula['gcc'].opt_lib}/gcc/#{Formula["gcc"].installed_version.major}"
+      ENV.prepend_path "CFLAGS", "-I#{Formula['gcc'].opt_include}"
+      ENV.prepend_path "LDFLAGS", "-L#{Formula['gcc'].opt_lib}/gcc/#{Formula["gcc"].installed_version.major}"
+    end
 
     if (build.with? "cocoa") && (build.without? "x11")
       args << "--with-ns" << "--disable-ns-self-contained"
