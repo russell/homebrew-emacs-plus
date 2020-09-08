@@ -106,7 +106,7 @@ class EmacsPlusAT28 < EmacsBase
   if build.with? "native-comp-branch"
     patch do
       url (UrlResolver.patch_url "emacs-28/native-comp-make")
-      sha256 "f58b35e873f1bbbe9041b75d51093c5310410390465bc22e577896197ef8d5e8"
+      sha256 "4621b973f8af7ead6e9acdb0c3da2de72cb6e70bfa55793f8e012566c0504f7e"
     end
 
   end
