@@ -1,5 +1,5 @@
 diff --git a/Makefile.in b/Makefile.in
-index 2b47762b7b..688bc97113 100644
+index 2b47762b7b..284e28558e 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -425,8 +425,13 @@ lib lib-src lisp nt: Makefile
@@ -16,3 +16,12 @@ index 2b47762b7b..688bc97113 100644
  
  blessmail: Makefile src
  	$(MAKE) -C lib-src maybe-blessmail
+@@ -760,7 +765,7 @@ install-etc:
+ ### Install native compiled Lisp files.
+ install-eln:
+ ifeq ($(HAVE_NATIVE_COMP),yes)
+-	find native-lisp -type f -exec ${INSTALL_DATA} -D "{}" "$(ELN_DESTDIR){}" \;
++	find native-lisp -type f -exec ${INSTALL_DATA} "{}" "$(ELN_DESTDIR){}" \;
+ endif
+ 
+ ### Build Emacs and install it, stripping binaries while installing them.
