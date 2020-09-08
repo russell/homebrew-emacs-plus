@@ -1,0 +1,18 @@
+diff --git a/Makefile.in b/Makefile.in
+index 2b47762b7b..688bc97113 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -425,8 +425,13 @@ lib lib-src lisp nt: Makefile
+ dirstate = .git/logs/HEAD
+ VCSWITNESS = $(if $(wildcard $(srcdir)/$(dirstate)),$$(srcdir)/../$(dirstate))
+ src: Makefile
++ifeq (${ns_self_contained},no)
+ 	$(MAKE) -C $@ VCSWITNESS='$(VCSWITNESS)' BIN_DESTDIR='$(DESTDIR)${bindir}/' \
+ 		 ELN_DESTDIR='$(ELN_DESTDIR)' all
++else
++	$(MAKE) -C $@ VCSWITNESS='$(VCSWITNESS)' BIN_DESTDIR='${ns_appbindir}/' \
++		 ELN_DESTDIR='$(ELN_DESTDIR)' all
++endif
+ 
+ blessmail: Makefile src
+ 	$(MAKE) -C lib-src maybe-blessmail

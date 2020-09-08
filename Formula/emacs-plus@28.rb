@@ -103,6 +103,14 @@ class EmacsPlusAT28 < EmacsBase
     sha256 "b4ccc981e461ac12661fc4cf0ad7211a1dcab61dccf4bd4eee49ca5f7d66c496"
   end
 
+  if build.with? "native-comp-branch"
+    patch do
+      url (UrlResolver.patch_url "emacs-28/native-comp-make")
+      sha256 "47bfab33db941083a39c5933221e7405f564ec195e91e6d461f403f2ee4d769c"
+    end
+
+  end
+
   def install
     args = %W[
       --disable-dependency-tracking
